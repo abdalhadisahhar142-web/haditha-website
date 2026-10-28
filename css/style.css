@@ -1,0 +1,1256 @@
+/* ==========================================================================
+   مؤسسة الحديثة للسياحة والسفر — Stylesheet
+   Layout: RTL editorial page, 1280 container, arches as image frames,
+           one giant display word per section, glass panels on deep teal.
+   ========================================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  /* color (single deliberate dark look, like the reference) */
+  --ink: #0a2326;
+  /* page ground: night teal            */
+  --ink-2: #0e2f33;
+  /* raised surface                     */
+  --ink-3: #143c40;
+  /* art / card fill                    */
+  --sand: #f2e9d8;
+  /* primary text                       */
+  --sand-dim: rgba(242, 233, 216, .64);
+  --sand-faint: rgba(242, 233, 216, .4);
+  --gold: #c9a45c;
+  /* brand accent (their 💛)            */
+  --gold-soft: rgba(201, 164, 92, .16);
+  --line: rgba(242, 233, 216, .12);
+  --glass: rgba(242, 233, 216, .06);
+
+  /* type */
+  --font-display: "Reem Kufi", "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --font-body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --fs-giant: clamp(7rem, 22vw, 19rem);
+  --fs-h1: clamp(2.4rem, 5.4vw, 4.6rem);
+  --fs-h2: clamp(1.9rem, 4vw, 3.3rem);
+  --fs-h3: clamp(1.2rem, 1.8vw, 1.45rem);
+  --fs-body: clamp(1rem, 1.1vw, 1.1rem);
+  --fs-small: .875rem;
+
+  /* space & shape */
+  --gutter: max(16px, min(4vw, 48px));
+  --section: clamp(88px, 12vw, 168px);
+  --radius: 18px;
+  --arch: 999px 999px var(--radius) var(--radius);
+  --ease: cubic-bezier(.16, 1, .3, 1);
+
+  /* 8-point star tile (girih motif) used inside every arch */
+  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23C9A45C' stroke-opacity='.26'%3E%3Crect x='14' y='14' width='20' height='20'/%3E%3Crect x='14' y='14' width='20' height='20' transform='rotate(45 24 24)'/%3E%3Cpath d='M0 24h7M41 24h7M24 0v7M24 41v7'/%3E%3C/g%3E%3C/svg%3E");
+
+  color-scheme: dark;
+}
+
+/* ---------- 2. Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--ink);
+}
+
+body {
+  color: var(--sand);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+figure {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+svg {
+  display: block;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- 3. Layout helpers ---------- */
+.wrap {
+  width: 100%;
+  max-width: 1328px;
+  margin-inline: auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+
+.section {
+  padding-block: var(--section);
+}
+
+.section+.section {
+  border-top: 1px solid var(--line);
+}
+
+.section-head {
+  display: grid;
+  gap: 20px;
+  max-width: 46rem;
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gold);
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+.lead {
+  color: var(--sand-dim);
+  max-width: 38rem;
+}
+
+/* ---------- 4. Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 500;
+  line-height: 1.2;
+  transition: background-color .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease), transform .35s var(--ease);
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform .35s var(--ease);
+}
+
+.btn:hover svg {
+  transform: translateX(-4px);
+}
+
+.btn--gold {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.btn--gold:hover {
+  background: var(--sand);
+}
+
+.btn--ghost {
+  background: var(--glass);
+  border-color: var(--line);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.btn--ghost:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ---------- 5. Navigation (fixed, outside the smooth wrapper) ---------- */
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  padding-top: env(safe-area-inset-top, 0px);
+  transition: transform .5s var(--ease), background-color .4s, border-color .4s;
+  border-bottom: 1px solid transparent;
+}
+
+.nav.is-solid {
+  background: rgba(10, 35, 38, .72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-color: var(--line);
+}
+
+.nav.is-hidden {
+  transform: translateY(-100%);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 76px;
+  padding-block: 8px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand svg {
+  width: 34px;
+  height: 34px;
+  color: var(--gold);
+}
+
+.brand__name {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.brand__sub {
+  display: block;
+  font-size: .72rem;
+  color: var(--sand-faint);
+  margin-top: 4px;
+}
+
+.nav__links {
+  display: flex;
+  gap: 32px;
+  font-size: .95rem;
+}
+
+.nav__links a {
+  color: var(--sand-dim);
+  transition: color .3s;
+}
+
+.nav__links a:hover {
+  color: var(--sand);
+}
+
+.nav .btn {
+  padding: 10px 20px;
+  font-size: .9rem;
+}
+
+@media (max-width: 860px) {
+  .nav__links {
+    display: none;
+  }
+}
+
+/* ---------- 6. Hero ---------- */
+.hero {
+  position: relative;
+  padding-top: calc(76px + clamp(40px, 7vw, 96px));
+  padding-bottom: clamp(56px, 8vw, 112px);
+  overflow: hidden;
+}
+
+.hero::before {
+  /* faint ambient glow behind the arch */
+  content: "";
+  position: absolute;
+  inset: 10% -20% auto auto;
+  width: 70vw;
+  height: 70vw;
+  background: radial-gradient(closest-side, rgba(201, 164, 92, .12), transparent);
+  pointer-events: none;
+}
+
+.hero__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  align-items: end;
+  gap: clamp(32px, 5vw, 80px);
+}
+
+.hero__text {
+  display: grid;
+  gap: 28px;
+  min-width: 0;
+}
+
+.hero__title {
+  display: grid;
+  font-weight: 600;
+}
+
+.hero__small {
+  font-size: var(--fs-h3);
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--sand-dim);
+}
+
+.hero__word {
+  font-size: var(--fs-giant);
+  line-height: 1.05;
+  color: var(--sand);
+  margin-block: -.06em .04em;
+  /* room for descenders like ر so they never touch the text below */
+  padding-block: .06em;
+}
+
+.hero__word em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.hero__art {
+  position: relative;
+  justify-self: start;
+  width: min(100%, 440px);
+}
+
+.hero__art svg {
+  width: 100%;
+  height: auto;
+}
+
+.next-trip {
+  position: absolute;
+  inset-inline-end: -12%;
+  top: 12%;
+  /* over the sky, so the photo's subject (the Kaaba) stays visible */
+  width: min(270px, 78%);
+  padding: 20px 22px;
+  border-radius: var(--radius);
+  background: rgba(14, 47, 51, .55);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: grid;
+  gap: 6px;
+}
+
+.next-trip__label {
+  font-size: .78rem;
+  color: var(--gold);
+}
+
+.next-trip__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.next-trip__meta {
+  font-size: .85rem;
+  color: var(--sand-dim);
+  line-height: 1.6;
+}
+
+.tawaf {
+  animation: tawaf 26s linear infinite;
+}
+
+.tawaf--2 {
+  animation-duration: 34s;
+}
+
+.tawaf--3 {
+  animation-duration: 42s;
+}
+
+@keyframes tawaf {
+  to {
+    stroke-dashoffset: -400;
+  }
+}
+
+.twinkle {
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: .25;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__art {
+    justify-self: center;
+    width: min(78%, 360px);
+  }
+
+  .next-trip {
+    inset-inline-end: -8%;
+  }
+}
+
+/* ---------- 7. Services list ---------- */
+.services__list {
+  border-top: 1px solid var(--line);
+}
+
+.service {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  padding-block: clamp(22px, 3vw, 34px);
+  border-bottom: 1px solid var(--line);
+  transition: padding .5s var(--ease);
+}
+
+.service::before {
+  /* gold sweep on hover */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(270deg, var(--gold-soft), transparent 70%);
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  pointer-events: none;
+}
+
+.service:hover::before {
+  opacity: 1;
+}
+
+.service:hover {
+  padding-inline-start: 18px;
+}
+
+.service__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.4vw, 2.8rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.service__detail {
+  color: var(--sand-dim);
+}
+
+.service__arrow {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  color: var(--gold);
+  transition: background-color .4s, color .4s, transform .5s var(--ease);
+}
+
+.service__arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.service:hover .service__arrow {
+  background: var(--gold);
+  color: var(--ink);
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 640px) {
+  .service {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 16px;
+  }
+
+  .service__detail {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: .92rem;
+  }
+
+  .service__arrow {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+  }
+}
+
+/* ---------- 8. About + counters ---------- */
+.about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  gap: clamp(40px, 7vw, 120px);
+  align-items: start;
+}
+
+.about__copy {
+  display: grid;
+  gap: 24px;
+}
+
+.stats {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.stat {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 24px;
+  padding-block: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.stat__num {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--gold);
+  min-width: 2.4ch;
+}
+
+.stat__label {
+  color: var(--sand-dim);
+}
+
+@media (max-width: 860px) {
+  .about__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 9. Arch art (shared by cards & destinations) ---------- */
+.art {
+  --tint: rgba(201, 164, 92, .55);
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  max-width: 100%;
+  border-radius: var(--arch);
+  overflow: hidden;
+  background:
+    var(--pattern) center / 48px,
+    radial-gradient(120% 70% at 50% 100%, var(--tint), transparent 70%),
+    linear-gradient(180deg, var(--ink-3), var(--ink-2));
+  border: 1px solid var(--line);
+  isolation: isolate;
+}
+
+.art__icon {
+  width: 34%;
+  height: auto;
+  color: var(--gold);
+  transition: transform .8s var(--ease);
+}
+
+.art__tag {
+  position: absolute;
+  top: 18%;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: .8rem;
+  background: rgba(10, 35, 38, .6);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* tints per item, set on the element via a modifier class */
+.tint-teal {
+  --tint: rgba(70, 160, 150, .45);
+}
+
+.tint-rose {
+  --tint: rgba(196, 120, 110, .42);
+}
+
+.tint-sky {
+  --tint: rgba(110, 150, 200, .42);
+}
+
+.tint-olive {
+  --tint: rgba(150, 160, 90, .42);
+}
+
+/* ---------- 10. Trip cards ---------- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 2.4vw, 32px);
+}
+
+.card {
+  display: grid;
+  gap: 18px;
+  padding: 14px 14px 22px;
+  border-radius: calc(var(--radius) + 6px);
+  background: var(--glass);
+  border: 1px solid var(--line);
+  transition: border-color .4s, transform .6s var(--ease);
+}
+
+.card:hover {
+  border-color: rgba(201, 164, 92, .45);
+  transform: translateY(-6px);
+}
+
+.card:hover .art__icon {
+  transform: scale(1.12) rotate(-4deg);
+}
+
+.card .art {
+  aspect-ratio: 5 / 4;
+}
+
+.card__body {
+  display: grid;
+  gap: 12px;
+  padding-inline: 8px;
+}
+
+.card__meta {
+  display: grid;
+  gap: 4px;
+  font-size: .92rem;
+  color: var(--sand-dim);
+}
+
+.card__meta li {
+  display: flex;
+  gap: 10px;
+}
+
+.card__meta li::before {
+  content: "◆";
+  color: var(--gold);
+  font-size: .55rem;
+  line-height: 2.9;
+}
+
+.card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  padding-inline: 8px;
+}
+
+.card__price {
+  font-size: .85rem;
+  color: var(--sand-faint);
+}
+
+.card__price strong {
+  display: block;
+  color: var(--sand);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.card .btn {
+  padding: 10px 18px;
+  font-size: .88rem;
+}
+
+@media (max-width: 1000px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 11. Package (combine) ---------- */
+.package {
+  overflow: hidden;
+}
+
+.package__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .1em .35em;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 8vw, 7rem);
+  font-weight: 600;
+  line-height: 1.15;
+  margin-bottom: clamp(32px, 5vw, 56px);
+}
+
+.package__line .plus {
+  color: var(--gold);
+}
+
+.package__line span {
+  display: inline-block;
+}
+
+.package__intro {
+  max-width: 40rem;
+  color: var(--sand-dim);
+  margin-bottom: clamp(48px, 7vw, 88px);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+}
+
+.step {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 28px 24px 8px 0;
+  border-inline-start: 1px solid var(--line);
+}
+
+.step:first-child {
+  border-inline-start: 0;
+  padding-inline-start: 0;
+}
+
+.step {
+  padding-inline-start: 24px;
+}
+
+.step__num {
+  font-size: .85rem;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.step p {
+  color: var(--sand-dim);
+  font-size: .95rem;
+}
+
+@media (max-width: 860px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .step:nth-child(3) {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .step {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 24px;
+  }
+}
+
+/* ---------- 12. Destinations (horizontal pin on desktop) ---------- */
+.dest {
+  overflow: hidden;
+}
+
+.dest__track {
+  display: flex;
+  gap: clamp(18px, 2.4vw, 32px);
+  width: max-content;
+  will-change: transform;
+}
+
+.dest__card {
+  width: clamp(240px, 24vw, 340px);
+  display: grid;
+  gap: 16px;
+}
+
+.dest__card .art {
+  aspect-ratio: 3 / 4;
+}
+
+.dest__city {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.dest__info {
+  color: var(--sand-dim);
+  font-size: .92rem;
+}
+
+.dest__country {
+  color: var(--gold);
+  font-size: .85rem;
+}
+
+.art__city {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 6vw, 5.4rem);
+  font-weight: 700;
+  color: rgba(242, 233, 216, .1);
+  line-height: 1;
+  user-select: none;
+}
+
+/* phones/tablets: native swipe instead of pinning */
+@media (max-width: 899px) {
+  .dest__scroller {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 12px;
+    scrollbar-width: thin;
+  }
+
+  .dest__card {
+    scroll-snap-align: start;
+    width: min(76vw, 300px);
+  }
+}
+
+/* ---------- 13. Airlines marquee ---------- */
+.marquee {
+  border-block: 1px solid var(--line);
+  padding-block: 26px;
+  overflow: hidden;
+  display: flex;
+  gap: 0;
+}
+
+.marquee__label {
+  flex: none;
+  padding-inline: max(var(--gutter), env(safe-area-inset-right, 0px)) 24px;
+  color: var(--gold);
+  font-size: var(--fs-small);
+  align-self: center;
+  white-space: nowrap;
+}
+
+.marquee__mask {
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.marquee__track span {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  font-weight: 500;
+  padding-inline: 28px;
+  white-space: nowrap;
+  color: var(--sand-dim);
+}
+
+.marquee__track span::after {
+  content: "✦";
+  color: var(--gold);
+  font-size: .6em;
+  margin-inline-start: 56px;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(50%);
+  }
+}
+
+@media (max-width: 640px) {
+  .marquee__label {
+    display: none;
+  }
+}
+
+/* ---------- 14. Why us ---------- */
+.why__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 24px);
+}
+
+.pillar {
+  position: relative;
+  display: grid;
+  align-content: end;
+  gap: 12px;
+  min-height: 320px;
+  padding: 26px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background:
+    var(--pattern) center / 48px,
+    linear-gradient(180deg, var(--ink-2), var(--ink));
+  border: 1px solid var(--line);
+}
+
+.pillar__icon {
+  position: absolute;
+  top: 26px;
+  inset-inline-start: 26px;
+  width: 44px;
+  height: 44px;
+  color: var(--gold);
+}
+
+.pillar h3 {
+  font-size: 1.5rem;
+}
+
+.pillar p {
+  color: var(--sand-dim);
+  font-size: .95rem;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height .6s var(--ease), opacity .5s;
+}
+
+.pillar:hover p,
+.pillar:focus-within p {
+  max-height: 8em;
+  opacity: 1;
+}
+
+.pillar::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .6s var(--ease);
+}
+
+.pillar:hover::after {
+  transform: scaleX(1);
+}
+
+@media (hover: none) {
+  .pillar p {
+    max-height: none;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1000px) {
+  .why__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pillar {
+    min-height: 260px;
+  }
+}
+
+@media (max-width: 520px) {
+  .why__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 15. Contact + footer ---------- */
+.contact__title {
+  font-size: var(--fs-h1);
+  max-width: 18ch;
+  margin-bottom: clamp(48px, 7vw, 88px);
+}
+
+.contact__title em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+}
+
+.contact__item {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 28px 0 28px 28px;
+  border-bottom: 1px solid var(--line);
+  min-width: 0;
+}
+
+.contact__label {
+  font-size: var(--fs-small);
+  color: var(--gold);
+}
+
+.contact__value {
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
+}
+
+.contact__rows {
+  display: grid;
+  gap: 8px;
+}
+
+.contact__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contact__row small {
+  color: var(--sand-faint);
+}
+
+.copy {
+  flex: none;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  font-size: .78rem;
+  color: var(--sand-dim);
+  transition: border-color .3s, color .3s;
+}
+
+.copy:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.copy.is-done {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.text-link {
+  color: var(--gold);
+  border-bottom: 1px solid rgba(201, 164, 92, .4);
+}
+
+.text-link:hover {
+  border-color: var(--gold);
+}
+
+@media (max-width: 1000px) {
+  .contact__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .contact__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact__item {
+    padding-left: 0;
+  }
+}
+
+.footer {
+  padding-block: 32px calc(32px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--line);
+  color: var(--sand-faint);
+  font-size: var(--fs-small);
+}
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 32px;
+}
+
+.footer__links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer__links a:hover {
+  color: var(--sand);
+}
+
+/* ---------- 16. Floating WhatsApp ---------- */
+.fab {
+  position: fixed;
+  z-index: 60;
+  left: calc(18px + env(safe-area-inset-left, 0px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--ink);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+  transition: transform .4s var(--ease), background-color .3s;
+}
+
+.fab:hover {
+  transform: scale(1.08);
+  background: var(--sand);
+}
+
+.fab svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* ---------- 17. Company images (logo & photos from /images) ---------- */
+/* logo: big at the top of the page, a little smaller once the nav turns solid */
+.brand__logo {
+  width: auto;
+  height: 84px;
+  max-width: 200px;
+  object-fit: contain;
+  transition: height .4s var(--ease);
+}
+
+.nav.is-solid .brand__logo {
+  height: 58px;
+}
+
+@media (max-width: 640px) {
+  .brand__logo {
+    height: 62px;
+  }
+
+  .nav.is-solid .brand__logo {
+    height: 48px;
+  }
+}
+
+.hero__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* ignore the height="" attribute so aspect-ratio applies */
+  max-height: 62vh;
+  /* keep the hero within one screen on short displays */
+  aspect-ratio: 4 / 5.6;
+  object-fit: cover;
+  border-radius: 999px 999px var(--radius) var(--radius);
+  border: 1px solid rgba(201, 164, 92, .5);
+}
+
+/* photo inside an arch (trip cards & destinations); sits under the tag */
+.art__img {
+  position: absolute;
+  inset: -7.5% 0;
+  width: 100%;
+  height: 115%;
+  /* extra height for the scroll parallax */
+  object-fit: cover;
+  z-index: -1;
+  transition: transform .8s var(--ease);
+}
+
+.card:hover .art__img {
+  transform: scale(1.06);
+}
+
+/* ---------- 18. Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
