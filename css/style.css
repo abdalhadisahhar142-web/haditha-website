@@ -2131,7 +2131,192 @@ html.menu-open .nav { background: transparent; border-color: transparent; -webki
   .brand .brand__sub { font-size: .6rem; }
 }
 
-/* ---------- 30. Reduced motion ---------- */
+/* ---------- 30. Umrah packages + video slots ---------- */
+.trips__more { display: inline-block; margin-top: 28px; }
+
+.vids {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+}
+
+.vid {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 9 / 16;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid rgba(201, 164, 92, .35);
+  background: var(--ink-2);
+}
+
+.vid video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+/* placeholder until the video file is in place (videos/umrah-N.mp4) */
+.vid__ph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  color: var(--gold);
+  background:
+    var(--pattern) center / 40px,
+    radial-gradient(120% 70% at 50% 100%, rgba(201, 164, 92, .3), transparent 70%),
+    linear-gradient(180deg, var(--ink-3), var(--ink-2));
+  transition: opacity .4s;
+}
+
+.vid__play { width: 56px; height: 56px; transition: transform .5s var(--ease); }
+.vid:hover .vid__play { transform: scale(1.1); }
+.vid__label { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--sand); }
+
+.vid.is-ready .vid__ph { opacity: 0; pointer-events: none; }
+
+@media (max-width: 1000px) {
+  .vids {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: min(62vw, 260px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+  }
+  .vid { scroll-snap-align: start; }
+}
+
+/* ---------- 31. Umrah package cards (the page's main offer) ---------- */
+.pkgs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 28px);
+}
+
+.pkg {
+  --tone: rgba(201, 164, 92, .28);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  gap: 20px;
+  min-width: 0;
+  padding: clamp(24px, 2.6vw, 36px);
+  overflow: hidden;
+  border-radius: calc(var(--radius) + 8px);
+  border: 1px solid rgba(201, 164, 92, .4);
+  background:
+    radial-gradient(120% 55% at 50% 0%, var(--tone), transparent 65%),
+    var(--ink-2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .25);
+  transition: transform .6s var(--ease), border-color .4s, box-shadow .6s;
+}
+
+.pkg::before {                       /* gold edge across the top */
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.pkg--teal { --tone: rgba(70, 160, 150, .3); }
+.pkg--rose { --tone: rgba(196, 120, 110, .26); }
+
+.pkg:hover {
+  transform: translateY(-8px);
+  border-color: var(--gold);
+  box-shadow: 0 34px 70px rgba(0, 0, 0, .4);
+}
+
+.pkg__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+.pkg__icon {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 164, 92, .55);
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+.pkg__icon svg { width: 32px; height: 32px; }
+
+.pkg__tag {
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 164, 92, .45);
+  color: var(--gold);
+  font-size: .82rem;
+}
+
+.pkg__title { font-size: clamp(1.6rem, 2.4vw, 2.1rem); line-height: 1.25; }
+
+.pkg__figure {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pkg__num {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 5vw, 4.6rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--gold);
+}
+
+.pkg__num small { font-size: .55em; vertical-align: .35em; }
+.pkg__unit { color: var(--sand-dim); font-size: .95rem; line-height: 1.6; }
+
+.pkg__list { display: grid; align-content: start; gap: 12px; }
+.pkg__list li { display: flex; align-items: flex-start; gap: 10px; color: var(--sand); font-size: 1rem; line-height: 1.6; }
+.pkg__list svg { flex: none; width: 20px; height: 20px; margin-top: 3px; color: var(--gold); }
+
+.pkg__foot { display: grid; gap: 14px; }
+
+.pkg__price {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  color: var(--sand-faint);
+  font-size: .9rem;
+}
+
+.pkg__price strong { color: var(--sand); font-weight: 500; font-size: 1rem; }
+
+.pkg__cta { justify-content: center; width: 100%; padding: 16px 20px; font-size: 1.02rem; }
+
+@media (max-width: 900px) {
+  .pkgs { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
+}
+
+/* ---------- 32. Hero: office video over the photo ---------- */
+.hero__media { position: relative; }
+
+.hero__video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;                         /* the Kaaba photo shows until the video file loads */
+  transition: opacity .8s var(--ease);
+}
+
+.hero__media.is-ready .hero__video { opacity: 1; }
+
+/* ---------- 33. Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
 
   *,

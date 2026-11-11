@@ -37,6 +37,27 @@
     });
   });
 
+  // Video slots: show the video once its file loads; keep the "فيديو N" placeholder otherwise.
+  // Only one video plays at a time.
+  const videos = $$("[data-video] video");
+  videos.forEach((video) => {
+    const slot = video.closest("[data-video]");
+    const ready = () => slot.classList.add("is-ready");
+    if (video.readyState >= 1) ready();
+    video.addEventListener("loadedmetadata", ready);
+    video.addEventListener("play", () => videos.forEach((v) => { if (v !== video) v.pause(); }));
+  });
+
+  // Hero: the office video fades in over the photo once its file has loaded
+  const heroMedia = $("[data-hero-media]");
+  if (heroMedia) {
+    const video = $("video", heroMedia);
+    const show = () => heroMedia.classList.add("is-ready");
+    if (video.readyState >= 2) show();
+    video.addEventListener("loadeddata", show);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) video.pause();
+  }
+
   let smoother = null;      // set below when GSAP is available
   initMenu();
 
@@ -81,6 +102,8 @@
     reveal(".step", ".steps", { y: 40 });
     reveal(".svc-cta__box", ".svc-cta", { y: 50, scale: 0.97 });
     reveal(".mini-svc", ".mini-svc__grid", { y: 30 });
+    reveal(".vid", ".vids", { y: 60, scale: 0.96 });
+    reveal(".pkg", ".pkgs", { y: 70 });
     reveal(".footer__grid > *", ".footer", { y: 30 });
     reveal(".landmarks li", ".landmarks", { x: 40 });
     initMap();
