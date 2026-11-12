@@ -296,10 +296,10 @@
     if (!card) return;
     gsap.timeline({ scrollTrigger: { trigger: card, start: "top 80%", once: true } })
       .from(card, { y: 60, autoAlpha: 0, duration: 1.2 })
-      .from(".map__blocks rect, .map__consulate, .map__office, .map__hotel", { autoAlpha: 0, scale: 0.9, transformOrigin: "50% 50%", stagger: 0.03, duration: 0.6 }, "-=0.8")
+      .from(".map__blocks rect, .map__park, .map__consulate, .map__office, .map__hotel", { autoAlpha: 0, stagger: 0.03, duration: 0.6 }, "-=0.8")
       .from(".map__route", { autoAlpha: 0, duration: 0.8 }, "-=0.3")
       .from(".map__pin", { y: -70, autoAlpha: 0, duration: 1, ease: "bounce.out" }, "-=0.4")
-      .from(".map__labels text", { autoAlpha: 0, y: 8, stagger: 0.08, duration: 0.6 }, "-=0.5");
+      .from(".map__labels text", { autoAlpha: 0, stagger: 0.08, duration: 0.6 }, "-=0.5");
   }
 
   /* ---------- Shared behaviour ---------- */

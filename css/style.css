@@ -24,7 +24,7 @@
   --glass: rgba(242, 233, 216, .06);
 
   /* type */
-  --font-display: "Reem Kufi", "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --font-display: "Cairo", "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
   --font-body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
   --fs-giant: clamp(7rem, 22vw, 19rem);
   --fs-h1: clamp(2.4rem, 5.4vw, 4.6rem);
@@ -2298,7 +2298,8 @@ html.menu-open .nav { background: transparent; border-color: transparent; -webki
 
 .pkg__price strong { color: var(--sand); font-weight: 500; font-size: 1rem; }
 
-.pkg__cta { justify-content: center; width: 100%; padding: 16px 20px; font-size: 1.02rem; }
+.pkg__cta { justify-content: center; width: 100%; padding: 16px 20px; font-size: 1.02rem; white-space: nowrap; }
+.pkg__foot .pkg__price + .pkg__price { margin-top: -6px; }
 
 @media (max-width: 900px) {
   .pkgs { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
@@ -2316,7 +2317,113 @@ html.menu-open .nav { background: transparent; border-color: transparent; -webki
 
 .hero__media.is-ready .hero__video { opacity: 1; }
 
-/* ---------- 33. Reduced motion ---------- */
+/* ---------- 33. Umrah programmes: clickable options inside each card ---------- */
+.pkgs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pkg { grid-template-rows: auto auto auto 1fr auto; }
+
+.pkg__sub { color: var(--sand-dim); font-size: 1rem; line-height: 1.7; }
+
+.pkg__opts {
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  gap: 12px;
+  align-content: start;
+}
+
+.pkg-opt {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 20px 10px 14px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(201, 164, 92, .4);
+  background: rgba(10, 35, 38, .45);
+  text-align: center;
+  transition: border-color .3s, background-color .3s, transform .5s var(--ease);
+}
+
+.pkg-opt:hover { border-color: var(--gold); background: var(--gold-soft); transform: translateY(-4px); }
+
+.pkg-opt__value {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 3.6vw, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--gold);
+}
+
+.pkg-opt__unit { color: var(--sand-dim); font-size: .9rem; }
+
+.pkg-opt__ask {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--sand);
+  font-size: .82rem;
+}
+
+.pkg-opt__ask svg { width: 16px; height: 16px; color: var(--gold); }
+
+@media (max-width: 900px) {
+  .pkgs { grid-template-columns: 1fr; }
+}
+
+/* ---------- 34. Other services hub ---------- */
+.hub__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 28px);
+}
+
+.hub-card {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 16px;
+  min-width: 0;
+  padding: clamp(24px, 2.6vw, 34px);
+  border-radius: calc(var(--radius) + 8px);
+  border: 1px solid rgba(201, 164, 92, .35);
+  background: radial-gradient(120% 55% at 50% 0%, rgba(201, 164, 92, .16), transparent 65%), var(--ink-2);
+  transition: transform .6s var(--ease), border-color .4s;
+}
+
+.hub-card:hover { transform: translateY(-6px); border-color: var(--gold); }
+.hub-card__title { font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.3; }
+.hub-card__text { color: var(--sand-dim); }
+.hub-card__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+@media (max-width: 900px) {
+  .hub__grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- 35. Two video slots ---------- */
+.vids { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 640px; }
+
+@media (max-width: 1000px) {
+  .vids { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; }
+}
+
+/* ---------- 36. Map (traced from Google Maps) + package line ---------- */
+.map__roads .map__road--main { stroke-width: 26; stroke: rgba(242, 233, 216, .13); }
+.map__park { fill: rgba(110, 170, 120, .16); stroke: rgba(110, 170, 120, .3); }
+.map .map__label--road { font-size: 12px; fill: rgba(242, 233, 216, .42); }
+.map__north circle { fill: rgba(10, 35, 38, .7); stroke: rgba(201, 164, 92, .4); }
+.map__north path { fill: var(--gold); }
+
+/* "عمرة + تأشيرة + طيران + فندق" on one line */
+.package__line {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: .3em;
+  font-size: clamp(1.25rem, 4.4vw, 3.4rem);
+}
+
+/* ---------- 37. Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
 
   *,
